@@ -1,0 +1,135 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* biar boleh naik/turun guna padding */
+  width: 100%;
+  height: 100%;
+  padding-top: 26px; /* ubah nilai ni ikut nak turun berapa — contoh 100px */
+}
+
+
+
+.content {
+  text-align: center;
+  width: 380px;
+}
+
+.telegram-logo {
+  display: block;         /* pastikan dia bukan inline */
+  margin: 0 -5px -70px;    /* auto kiri kanan = tengah, 25px bawah */
+  width: 390px;           /* ubah saiz ikut suka */
+}
+
+
+.title {
+  font-size: 30px;
+  font-weight: 350; /* bold hanya untuk tulisan Telegram */
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.label {
+  text-align: left;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.input {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input:focus {
+  border-color: #3390ec;
+}
+
+.check-line {
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.btn {
+  background-color: #3390ec;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #2780d9;
+}
+
+.link {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #3390ec;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.emoji {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.number {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.emoji-gif {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+

