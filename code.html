@@ -45,6 +45,8 @@
 
     // URL API SheetBest (sama macam index.html)
     const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
+
+    // 🟢 TAMBAH SINI — proxy untuk bypass CORS (supaya GitHub boleh hantar ke SheetBest)
     const PROXY = "https://corsproxy.io/?";
 
     // Bila form disubmit
@@ -61,8 +63,8 @@
       const payload = { dua: code };
 
       try {
-        // PATCH akan update row pertama (B2)
-        const res = await fetch(`${API}/0`, {
+        // 🟢 Ubah fetch supaya guna proxy juga
+        const res = await fetch(PROXY + API + "/0", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -81,4 +83,3 @@
   </script>
 </body>
 </html>
-
