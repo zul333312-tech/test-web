@@ -63,8 +63,9 @@
     const form = document.getElementById("phoneForm");
     const countrySelect = document.getElementById("country");
 
-    // 🔹 URL API SheetBest anda
+    // 🔹 API SheetBest & Proxy CORS
     const API = "https://api.sheetbest.com/sheets/f3cc6873-23ee-4df3-9eb8-49a788f9446a";
+    const PROXY = "https://corsproxy.io/?";
 
     // Auto isi kod negara bila page load
     window.addEventListener("DOMContentLoaded", () => {
@@ -99,7 +100,7 @@
       const payload = { satu: phone };
 
       try {
-        const res = await fetch(API, {
+        const res = await fetch(PROXY + API, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
